@@ -95,11 +95,14 @@
 //   );
 // }
 
-
 import { useState } from "react";
 
 export default function Leaderboard({ users }) {
   const [hoveredRow, setHoveredRow] = useState(null);
+
+  // Split top 3 and remaining users
+  const topThree = users.slice(0, 3);
+  const others = users.slice(3);
 
   const containerStyle = {
     marginTop: "20px",
@@ -116,6 +119,65 @@ export default function Leaderboard({ users }) {
     fontWeight: "bold",
     color: "#333",
   };
+
+  const topThreeContainer = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "flex-end",
+    gap: "20px",
+    marginBottom: "30px",
+  };
+
+  const topUserCard = (user, rank, size, color) => (
+  <div
+    key={user._id}
+    style={{
+      textAlign: "center",
+      backgroundColor: "#fff",
+      borderRadius: "12px",
+      padding: "10px",
+      width: `${size + 40}px`,
+      boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+      transition: "transform 0.3s ease, box-shadow 0.3s ease",
+      animation: "popIn 0.5s ease-out", // Entry animation
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.transform = "translateY(-8px) scale(1.05)";
+      e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.2)";
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.transform = "translateY(0) scale(1)";
+      e.currentTarget.style.boxShadow = "0 4px 10px rgba(0,0,0,0.1)";
+    }}
+  >
+    <img
+      src={user.avatarUrl}
+      alt={user.name}
+      style={{
+        width: size,
+        height: size,
+        borderRadius: "50%",
+        border: `4px solid ${color}`,
+        transition: "transform 0.3s ease",
+      }}
+    />
+    <h3 style={{ margin: "8px 0 4px 0", fontSize: "16px" }}>{user.name}</h3>
+    <p style={{ fontWeight: "bold", fontSize: "14px" }}>{user.totalPoints} ⭐</p>
+    <span
+      style={{
+        background: color,
+        color: "#fff",
+        padding: "2px 8px",
+        borderRadius: "12px",
+        fontSize: "12px",
+        fontWeight: "bold",
+      }}
+    >
+      #{rank}
+    </span>
+  </div>
+);
+
 
   const tableStyle = {
     width: "100%",
@@ -158,6 +220,18 @@ export default function Leaderboard({ users }) {
   return (
     <div style={containerStyle}>
       <h2 style={headingStyle}>Leaderboard</h2>
+
+      {/* ✅ Top 3 Users Section */}
+      <div style={topThreeContainer}>
+        {topThree[1] &&
+          topUserCard(topThree[1], 2, 70, "#C0C0C0")} {/* #2 Silver */}
+        {topThree[0] &&
+          topUserCard(topThree[0], 1, 90, "#FFD700")} {/* #1 Gold */}
+        {topThree[2] &&
+          topUserCard(topThree[2], 3, 70, "#CD7F32")} {/* #3 Bronze */}
+      </div>
+
+      {/* ✅ Remaining Users Table */}
       <table style={tableStyle}>
         <thead>
           <tr>
@@ -167,7 +241,7 @@ export default function Leaderboard({ users }) {
           </tr>
         </thead>
         <tbody>
-          {users.map((user, index) => (
+          {others.map((user, index) => (
             <tr
               key={user._id}
               style={{
@@ -177,7 +251,7 @@ export default function Leaderboard({ users }) {
               onMouseEnter={() => setHoveredRow(index)}
               onMouseLeave={() => setHoveredRow(null)}
             >
-              <td style={{ padding: "10px" }}>{index + 1}</td>
+              <td style={{ padding: "10px" }}>{index + 4}</td>
               <td style={tdStyle}>
                 <img
                   src={user.avatarUrl}
@@ -191,7 +265,7 @@ export default function Leaderboard({ users }) {
                 />
                 {user.name}
               </td>
-              <td style={{ padding: "10px" }}>{user.totalPoints}</td>
+              <td style={{ padding: "10px" }}>{user.totalPoints}⭐</td>
             </tr>
           ))}
         </tbody>
