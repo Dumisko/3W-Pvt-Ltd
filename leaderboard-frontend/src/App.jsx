@@ -4,6 +4,7 @@ import Leaderboard from "./components/Leaderboard";
 import UserForm from "./components/UserForm";
 import ClaimPoints from "./components/ClaimPoints";
 import API from "./api";
+import "./App.css"; // ✅ import CSS
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -45,32 +46,18 @@ function App() {
     }
   };
 
-  const appStyle = {
-    padding: "20px",
-    maxWidth: "700px",
-    margin: "40px auto",
-    backgroundColor: "#f0f4f8",
-    borderRadius: "12px",
-    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-  };
-
-  const headingStyle = {
-    textAlign: "center",
-    fontSize: "28px",
-    fontWeight: "bold",
-    color: "#333",
-    marginBottom: "20px",
-  };
-
   return (
-    <div style={appStyle}>
+    <div className="app-container">
       <motion.h1
-        style={headingStyle}
+        className="heading"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        whileHover={{ scale: 1.05, color: "#007bff", textShadow: "0px 0px 8px rgba(0,123,255,0.6)" }}
+        whileHover={{
+          scale: 1.05,
+          color: "#007bff",
+          textShadow: "0px 0px 8px rgba(0,123,255,0.6)",
+        }}
       >
         🏆 Leaderboard System
       </motion.h1>

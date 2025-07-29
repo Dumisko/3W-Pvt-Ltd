@@ -1,271 +1,76 @@
-// import { motion, AnimatePresence } from "framer-motion";
-
-// export default function Leaderboard({ users }) {
-//   const containerStyle = {
-//     marginTop: "20px",
-//     padding: "20px",
-//     backgroundColor: "#f9f9f9",
-//     borderRadius: "10px",
-//     boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-//   };
-
-//   const headingStyle = {
-//     textAlign: "center",
-//     marginBottom: "15px",
-//     fontSize: "22px",
-//     fontWeight: "bold",
-//     color: "#333",
-//   };
-
-//   const tableStyle = {
-//     width: "100%",
-//     borderCollapse: "collapse",
-//     backgroundColor: "#fff",
-//     borderRadius: "8px",
-//     overflow: "hidden",
-//     boxShadow: "0 2px 8px rgba(0, 0, 0, 0.05)",
-//   };
-
-//   const thStyle = {
-//     backgroundColor: "#007bff",
-//     color: "#fff",
-//     padding: "12px",
-//     textAlign: "left",
-//     fontSize: "16px",
-//   };
-
-//   const tdStyle = {
-//     padding: "12px",
-//     borderBottom: "1px solid #ddd",
-//     fontSize: "15px",
-//     color: "#333",
-//   };
-
-//   const rowVariants = {
-//     hidden: { opacity: 0, y: 20 },
-//     visible: (i) => ({
-//       opacity: 1,
-//       y: 0,
-//       transition: { delay: i * 0.08, type: "spring", stiffness: 120 },
-//     }),
-//   };
-
-//   return (
-//     <div style={containerStyle}>
-//       <h2 style={headingStyle}>Leaderboard</h2>
-//       <table style={tableStyle}>
-//         <thead>
-//           <tr>
-//             <th style={thStyle}>Rank</th>
-//             <th style={thStyle}>Name</th>
-//             <th style={thStyle}>Total Points</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           <AnimatePresence>
-//             {users.map((user, index) => (
-//               <motion.tr
-//                 key={user._id}
-//                 variants={rowVariants}
-//                 initial="hidden"
-//                 animate="visible"
-//                 custom={index}
-//                 exit={{ opacity: 0, scale: 0.95 }}
-//                 whileHover={{
-//                   scale: 1.02,
-//                   backgroundColor: "#e3f2fd",
-//                   boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-//                   transition: { type: "spring", stiffness: 200, damping: 12 },
-//                 }}
-//                 whileTap={{ scale: 0.98 }}
-//                 style={{
-//                   backgroundColor: index % 2 !== 0 ? "#f8f9fa" : "#fff",
-//                   cursor: "pointer",
-//                 }}
-//               >
-//                 <td style={tdStyle}>{index + 1}</td>
-//                 <td style={tdStyle}>{user.name}</td>
-//                 <td style={tdStyle}>{user.totalPoints}</td>
-//               </motion.tr>
-//             ))}
-//           </AnimatePresence>
-//         </tbody>
-//       </table>
-//     </div>
-//   );
-// }
-
 import { useState } from "react";
+import "./Leaderboard.css";
 
 export default function Leaderboard({ users }) {
   const [hoveredRow, setHoveredRow] = useState(null);
-
-  // Split top 3 and remaining users
   const topThree = users.slice(0, 3);
   const others = users.slice(3);
 
-  const containerStyle = {
-    marginTop: "20px",
-    padding: "20px",
-    backgroundColor: "#f9f9f9",
-    borderRadius: "10px",
-    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-  };
-
-  const headingStyle = {
-    textAlign: "center",
-    marginBottom: "15px",
-    fontSize: "22px",
-    fontWeight: "bold",
-    color: "#333",
-  };
-
-  const topThreeContainer = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "flex-end",
-    gap: "20px",
-    marginBottom: "30px",
-  };
-
   const topUserCard = (user, rank, size, color) => (
-  <div
-    key={user._id}
-    style={{
-      textAlign: "center",
-      backgroundColor: "#fff",
-      borderRadius: "12px",
-      padding: "10px",
-      width: `${size + 40}px`,
-      boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-      transition: "transform 0.3s ease, box-shadow 0.3s ease",
-      animation: "popIn 0.5s ease-out", // Entry animation
-    }}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.transform = "translateY(-8px) scale(1.05)";
-      e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.2)";
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.transform = "translateY(0) scale(1)";
-      e.currentTarget.style.boxShadow = "0 4px 10px rgba(0,0,0,0.1)";
-    }}
-  >
-    <img
-      src={user.avatarUrl}
-      alt={user.name}
-      style={{
-        width: size,
-        height: size,
-        borderRadius: "50%",
-        border: `4px solid ${color}`,
-        transition: "transform 0.3s ease",
-      }}
-    />
-    <h3 style={{ margin: "8px 0 4px 0", fontSize: "16px" }}>{user.name}</h3>
-    <p style={{ fontWeight: "bold", fontSize: "14px" }}>{user.totalPoints} ⭐</p>
-    <span
-      style={{
-        background: color,
-        color: "#fff",
-        padding: "2px 8px",
-        borderRadius: "12px",
-        fontSize: "12px",
-        fontWeight: "bold",
-      }}
+    <div
+      key={user._id}
+      className="top-user-card"
+      style={{ width: `${size + 40}px` }}
     >
-      #{rank}
-    </span>
-  </div>
-);
-
-
-  const tableStyle = {
-    width: "100%",
-    borderCollapse: "collapse",
-    backgroundColor: "#fff",
-    borderRadius: "8px",
-    overflow: "hidden",
-    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.05)",
-  };
-
-  const thStyle = {
-    backgroundColor: "#007bff",
-    color: "#fff",
-    padding: "12px",
-    textAlign: "left",
-    fontSize: "16px",
-  };
-
-  const tdStyle = {
-    padding: "10px",
-    borderBottom: "1px solid #ddd",
-    fontSize: "15px",
-    color: "#333",
-    display: "flex",
-    alignItems: "center",
-    gap: "10px",
-  };
-
-  const rowBaseStyle = {
-    transition: "all 0.3s ease",
-    cursor: "pointer",
-  };
-
-  const rowHoverEffect = {
-    backgroundColor: "#f1f7ff",
-    transform: "scale(1.01)",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-  };
+      <img
+        src={user.avatarUrl}
+        alt={user.name}
+        className="top-user-avatar"
+        style={{
+          width: size,
+          height: size,
+          border: `4px solid ${color}`,
+        }}
+      />
+      <h3 style={{ margin: "8px 0 4px 0", fontSize: "16px" }}>{user.name}</h3>
+      <p style={{ fontWeight: "bold", fontSize: "14px" }}>
+        {user.totalPoints} ⭐
+      </p>
+      <span
+        className="top-user-rank"
+        style={{ background: color }}
+      >
+        #{rank}
+      </span>
+    </div>
+  );
 
   return (
-    <div style={containerStyle}>
-      <h2 style={headingStyle}>Leaderboard</h2>
+    <div className="leaderboard-container">
+      <h2 className="leaderboard-heading">Leaderboard</h2>
 
-      {/* ✅ Top 3 Users Section */}
-      <div style={topThreeContainer}>
-        {topThree[1] &&
-          topUserCard(topThree[1], 2, 70, "#C0C0C0")} {/* #2 Silver */}
-        {topThree[0] &&
-          topUserCard(topThree[0], 1, 90, "#FFD700")} {/* #1 Gold */}
-        {topThree[2] &&
-          topUserCard(topThree[2], 3, 70, "#CD7F32")} {/* #3 Bronze */}
+      <div className="top-three-container">
+        {topThree[1] && topUserCard(topThree[1], 2, 70, "#C0C0C0")}
+        {topThree[0] && topUserCard(topThree[0], 1, 90, "#FFD700")}
+        {topThree[2] && topUserCard(topThree[2], 3, 70, "#CD7F32")}
       </div>
 
-      {/* ✅ Remaining Users Table */}
-      <table style={tableStyle}>
+      <table className="leaderboard-table">
         <thead>
           <tr>
-            <th style={thStyle}>Rank</th>
-            <th style={thStyle}>User</th>
-            <th style={thStyle}>Total Points</th>
+            <th>Rank</th>
+            <th>User</th>
+            <th>Total Points</th>
           </tr>
         </thead>
         <tbody>
           {others.map((user, index) => (
             <tr
               key={user._id}
-              style={{
-                ...rowBaseStyle,
-                ...(hoveredRow === index ? rowHoverEffect : {}),
-              }}
+              className="leaderboard-row"
               onMouseEnter={() => setHoveredRow(index)}
               onMouseLeave={() => setHoveredRow(null)}
             >
-              <td style={{ padding: "10px" }}>{index + 4}</td>
-              <td style={tdStyle}>
+              <td>{index + 4}</td>
+              <td className="user-cell">
                 <img
                   src={user.avatarUrl}
                   alt={user.name}
-                  style={{
-                    width: "30px",
-                    height: "30px",
-                    borderRadius: "50%",
-                    border: "2px solid #ddd",
-                  }}
+                  className="user-avatar"
                 />
                 {user.name}
               </td>
-              <td style={{ padding: "10px" }}>{user.totalPoints}⭐</td>
+              <td>{user.totalPoints} ⭐</td>
             </tr>
           ))}
         </tbody>
